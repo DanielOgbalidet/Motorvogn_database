@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Motorvogn</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="index.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <style>
+        body{
+            margin-left: 5px;
+        }
+        input{
+            margin: 3px;
+        }
+    </style>
+</head>
+<body>
+
+<table>
+    <tr>
+        <td>Eiers personnummer: <br>
+            <input type="number" id="innPers" name="fjern"/>
+        </td>
+        <td>Eiers navn: <br>
+            <input type="text" id="innNavn" name="fjern"/>
+        </td>
+        <td>Eiers adresse: <br>
+            <input type="text" id="innAdresse" name="fjern"/>
+        </td>
+    </tr>
+
+    <tr>
+        <td>Kjennetegn: <br>
+            <input type="text" id="innKjennetegn" name="fjern"/>
+        </td>
+        <td>Bilmerke: <br>
+            <div id="innMerke" class="dropdown"></div>
+        </td>
+        <td>Biltype: <br>
+            <div id="innType" class="dropdown"></div>
+        </td>
+    </tr>
+</table>
+
+<button id="leggTil" class="btn btn-primary" onclick="lagre();">Registrer</button>
+
+<div id="visRegister"></div>
+
+<br>
+<button id="slett" class="btn btn-danger" onclick="slett()" disabled>Slett alle</button>
+
+</body>
+</html>
