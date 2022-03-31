@@ -1,5 +1,6 @@
 $(function () {
     velgMerker();
+    vis();
 });
 
 function velgMerker() {
@@ -79,7 +80,7 @@ function ut(motorvogn) {
             "<td>"+vogn.merke+"</td>" +
             "<td>"+vogn.type+"</td>" +
             "<td><button class='btn btn-danger' onclick='slettBil("+vogn.id+")'>Slett</button></td>" +
-            "<td><button class='btn btn-info'>Endre</button></td>" +
+            "<td><a href='endre.html?id="+vogn.id+"' class='btn btn-info'>Endre</a></td>" +
             "</tr>"
     }
     ut += "</table>";
@@ -89,10 +90,6 @@ function ut(motorvogn) {
     $("input[name = fjern]").val("");
     $("#valgMerker")[0].selectedIndex = 0;
     $("#innType").html("");
-}
-
-function endreBil(id) {
-
 }
 
 function slettBil(id) {

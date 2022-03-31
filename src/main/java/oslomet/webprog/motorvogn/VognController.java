@@ -43,4 +43,14 @@ public class VognController {
         rep.slettBil(id);
     }
 
+    @GetMapping("/hentEnBil")
+    public Motorvogn hentEnBil(int id) {
+        return rep.hentEnBil(id);
+    }
+
+    @GetMapping("/endreBil")
+    public void endreBil(Motorvogn m) {
+        rep.endreBil(m);
+    }
+
 }

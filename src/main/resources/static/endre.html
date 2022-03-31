@@ -2,9 +2,49 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Endre bil</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="endre.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <style>
+        body{
+            margin-left: 5px;
+        }
+        input{
+            margin: 3px;
+        }
+    </style>
 </head>
 <body>
+<table>
+    <input type="hidden" id="id"/>
+    <tr>
+        <td>Eiers personnummer: <br>
+            <input type="number" id="innPers" name="fjern"/>
+        </td>
+        <td>Eiers navn: <br>
+            <input type="text" id="innNavn" name="fjern"/>
+        </td>
+        <td>Eiers adresse: <br>
+            <input type="text" id="innAdresse" name="fjern"/>
+        </td>
+    </tr>
 
+    <tr>
+        <td>Kjennetegn: <br>
+            <input type="text" id="innKjennetegn" name="fjern"/>
+        </td>
+        <td>Bilmerke: <br>
+            <div id="innMerke" class="dropdown"></div>
+        </td>
+        <td>Biltype: <br>
+            <div id="innType" class="dropdown"></div>
+        </td>
+    </tr>
+</table>
+
+<br>
+
+<button class="btn btn-info" onclick="endreBil()">Endre</button>
 </body>
 </html>

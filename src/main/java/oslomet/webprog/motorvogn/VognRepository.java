@@ -47,4 +47,16 @@ public class VognRepository {
         db.update(sql, id);
     }
 
+    public Motorvogn hentEnBil(int id) {
+        Object[] param = new Object[1];
+        param[0] = id;
+        String sql = "SELECT * FROM Motorvogn WHERE id = ?";
+        return db.queryForObject(sql, BeanPropertyRowMapper.newInstance(Motorvogn.class), param);
+    }
+
+    public void endreBil(Motorvogn m) {
+        String sql = "UPDATE Motorvogn SET personNr = ?, navn = ?, adresse = ?, kjennetegn = ?, merke = ?, type = ? WHERE id = ?";
+        db.update(sql, m.getPersonNr(), m.getNavn(), m.getAdresse(), m.getKjennetegn(), m.getMerke(), m.getType(), m.getId());
+    }
+
 }
