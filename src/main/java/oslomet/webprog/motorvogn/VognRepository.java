@@ -30,4 +30,21 @@ public class VognRepository {
         db.update(sql);
     }
 
+    public List<String> visMerker() {
+        String sql = "SELECT DISTINCT merke FROM Bil";
+        List<String> merker = db.queryForList(sql, String.class);
+        return merker;
+    }
+
+    public List<String> visT(String merke) {
+        String sql = "SELECT Type FROM Bil WHERE merke = ?";
+        List<String> typer =  db.queryForList(sql, String.class, merke);
+        return typer;
+    }
+
+    public void slettBil(int id) {
+        String sql = "DELETE FROM Motorvogn WHERE id = ?";
+        db.update(sql, id);
+    }
+
 }

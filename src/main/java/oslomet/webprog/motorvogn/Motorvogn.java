@@ -1,6 +1,7 @@
 package oslomet.webprog.motorvogn;
 
 public class Motorvogn {
+    private int id;
     private String personNr;
     private String navn;
     private String adresse;
@@ -8,8 +9,9 @@ public class Motorvogn {
     private String merke;
     private String type;
 
-    public Motorvogn(String personNr, String navn, String adresse, String kjennetegn,
+    public Motorvogn(int id, String personNr, String navn, String adresse, String kjennetegn,
                      String merke, String type) {
+        this.id = id;
         this.personNr = personNr;
         this.navn = navn;
         this.adresse = adresse;
@@ -19,6 +21,14 @@ public class Motorvogn {
     }
 
     public Motorvogn() {}
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getPersonNr() {
         return personNr;

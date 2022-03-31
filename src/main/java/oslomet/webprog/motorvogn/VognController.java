@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,39 +24,23 @@ public class VognController {
     }
 
     @GetMapping("/menyMerke")
-    public ArrayList<String> merke() {
-        ArrayList<String> merker = new ArrayList<>();
-        merker.add("Volvo");
-        merker.add("Toyota");
-        merker.add("BMW");
-        return merker;
+    public List<String> merke() {
+        return rep.visMerker();
     }
 
     @GetMapping("/menyType")
-    public ArrayList<String> type(String merke) {
-        ArrayList<String> volvo = new ArrayList<>();
-        volvo.add("A8");
-        volvo.add("B56");
-        volvo.add("A2");
-
-        ArrayList<String> toyota = new ArrayList<>();
-        toyota.add("T97");
-        toyota.add("T23");
-        toyota.add("P4");
-
-        ArrayList<String> bmw = new ArrayList<>();
-        bmw.add("B34");
-        bmw.add("M34");
-        bmw.add("W34");
-
-        if(merke.equals("Volvo")) return volvo;
-        else if (merke.equals("Toyota")) return toyota;
-        return bmw;
+    public List<String> type(String merke) {
+        return rep.visT(merke);
     }
 
     @GetMapping("/slett")
     public void slett() {
         rep.slett();
+    }
+
+    @GetMapping("/slettBil")
+    public void slettBil(int id) {
+        rep.slettBil(id);
     }
 
 }
