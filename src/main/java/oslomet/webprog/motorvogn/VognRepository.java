@@ -1,5 +1,7 @@
 package oslomet.webprog.motorvogn;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,36 +12,52 @@ import java.util.List;
 @Repository
 public class VognRepository {
 
+    private final Logger logger = LoggerFactory.getLogger(VognRepository.class);
+
     @Autowired
     private JdbcTemplate db;
 
-    public void add(Motorvogn innMotorvogn) {
+    public boolean add(Motorvogn innMotorvogn) {
         String sql = "INSERT INTO Motorvogn (personNr, navn, adresse, kjennetegn, merke, type) VALUES(?, ?, ?, ?, ?, ?)";
-        db.update(sql, innMotorvogn.getPersonNr(), innMotorvogn.getNavn(), innMotorvogn.getAdresse(), innMotorvogn.getKjennetegn(),
-                innMotorvogn.getMerke(), innMotorvogn.getType());
+        try {
+            db.update(sql, innMotorvogn.getPersonNr(), innMotorvogn.getNavn(), innMotorvogn.getAdresse(), innMotorvogn.getKjennetegn(),
+                    innMotorvogn.getMerke(), innMotorvogn.getType());
+            return true;
+        } catch(Exception e) {
+            logger.error("Feil med add()" + e);
+        }
+        return false;
     }
 
     public List<Motorvogn> vis() {
         String sql = "SELECT * FROM Motorvogn";
-        List<Motorvogn> alleVogner = db.query(sql, new BeanPropertyRowMapper(Motorvogn.class));
-        return alleVogner;
+        try {
+            return db.query(sql, new BeanPropertyRowMapper<>(Motorvogn.class));
+        } catch(Exception e) {
+            logger.error("Feil i vis()" + e);
+        }
+        return null;
     }
 
-    public void slett() {
+    public boolean slett() {
         String sql = "DELETE FROM Motorvogn";
-        db.update(sql);
+        try{
+            db.update(sql);
+            return true;
+        } catch(Exception e) {
+            logger.error("Feil med slett()" + e);
+        }
+        return false;
     }
 
     public List<String> visMerker() {
         String sql = "SELECT DISTINCT merke FROM Bil";
-        List<String> merker = db.queryForList(sql, String.class);
-        return merker;
+        return db.queryForList(sql, String.class);
     }
 
     public List<String> visT(String merke) {
         String sql = "SELECT Type FROM Bil WHERE merke = ?";
-        List<String> typer =  db.queryForList(sql, String.class, merke);
-        return typer;
+        return db.queryForList(sql, String.class, merke);
     }
 
     public void slettBil(int id) {
@@ -50,8 +68,13 @@ public class VognRepository {
     public Motorvogn hentEnBil(int id) {
         Object[] param = new Object[1];
         param[0] = id;
-        String sql = "SELECT * FROM Motorvogn WHERE id = ?";
-        return db.queryForObject(sql, BeanPropertyRowMapper.newInstance(Motorvogn.class), param);
+        String sql = "SELECT * FROM Motorvognbruh WHERE id = ?";
+        try {
+            return db.queryForObject(sql, BeanPropertyRowMapper.newInstance(Motorvogn.class), param);
+        }catch(Exception e) {
+            logger.error("Feil med hentEnBil()" + e);
+        }
+        return null;
     }
 
     public void endreBil(Motorvogn m) {

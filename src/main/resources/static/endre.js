@@ -11,6 +11,9 @@ $(function () {
         setMerke(merke);
         velgMerker();
         velgType(merke);
+    }).fail(function(jqXHR) {
+        const json = $.parseJSON(jqXHR.responseText);
+        $("#feil").html(json.message);
     });
 });
 

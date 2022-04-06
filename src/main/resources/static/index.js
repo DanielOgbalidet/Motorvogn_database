@@ -49,12 +49,18 @@ function lagre() {
 
     $.post("/lagre", Motorvogn, function () {
         vis();
+    }).fail(function(jqXHR) {
+        const json = $.parseJSON(jqXHR.responseText);
+        $("#feil").html(json.message);
     });
 }
 
 function vis() {
     $.post("/visArray", function (data) {
         ut(data);
+    }).fail(function(jqXHR) {
+        const json = $.parseJSON(jqXHR.responseText);
+        $("#feil").html(json.message);
     });
 }
 
@@ -102,6 +108,9 @@ function slettBil(id) {
 function slett() {
     $.get("/slett", function () {
         $("#visRegister").html("");
+        $("#slett").attr('disabled', true);
+    }).fail(function(jqXHR) {
+        const json = $.parseJSON(jqXHR.responseText);
+        $("#feil").html(json.message);
     });
-    $("#slett").attr('disabled', true);
 }
