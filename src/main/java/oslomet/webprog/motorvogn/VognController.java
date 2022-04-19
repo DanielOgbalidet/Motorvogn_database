@@ -16,10 +16,26 @@ public class VognController {
     @Autowired
     private VognRepository rep;
 
+    public boolean valider(Motorvogn m) {
+        String pers = "\\d{11}";
+        String navn = "[a-zæøåA-ZÆØÅ \\-]{2,20}";
+        String adresse = "[\\da-zæøåA-ZÆØÅ -'\\-]{2,50}";
+
+        boolean persOK = m.getPersonNr().matches(pers);
+        boolean navnOK = m.getNavn().matches(navn);
+        boolean adresseOK = m.getAdresse().matches(adresse);
+
+        return persOK && navnOK && adresseOK;
+    }
+
     @PostMapping("/lagre")
     public void leggTil(Motorvogn innMotorvogn, HttpServletResponse response) throws IOException{
-        if(!rep.add(innMotorvogn)) {
-            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Det har oppstått en feil, plis prøv igjen senere");
+        if(!valider(innMotorvogn)) {
+            response.sendError(HttpStatus.NOT_ACCEPTABLE.value(), "Det har oppstått feil ved validering");
+        }else {
+            if (!rep.add(innMotorvogn)) {
+                response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Det har oppstått en feil, plis prøv igjen senere");
+            }
         }
     }
 
