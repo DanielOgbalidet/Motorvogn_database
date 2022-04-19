@@ -66,11 +66,12 @@ public class VognRepository {
     }
 
     public Motorvogn hentEnBil(int id) {
-        Object[] param = new Object[1];
-        param[0] = id;
-        String sql = "SELECT * FROM Motorvognbruh WHERE id = ?";
+        //Object[] param = new Object[1];
+        //param[0] = id;
+        //Hvis du bruker det over så må id i try byttes om til param
+        String sql = "SELECT * FROM Motorvogn WHERE id = ?";
         try {
-            return db.queryForObject(sql, BeanPropertyRowMapper.newInstance(Motorvogn.class), param);
+            return db.queryForObject(sql, BeanPropertyRowMapper.newInstance(Motorvogn.class), id);
         }catch(Exception e) {
             logger.error("Feil med hentEnBil()" + e);
         }

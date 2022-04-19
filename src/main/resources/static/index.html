@@ -5,6 +5,7 @@
     <title>Motorvogn</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="index.js"></script>
+    <script src="valider.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
     <style>
         body{
@@ -20,16 +21,20 @@
 <table>
     <tr>
         <td>Eiers personnummer: <br>
-            <input type="number" id="innPers" name="fjern"/>
+            <input type="number" id="innPers" name="fjern" onkeyup="validerPers(this.value)"/>
         </td>
         <td>Eiers navn: <br>
-            <input type="text" id="innNavn" name="fjern"/>
+            <input type="text" id="innNavn" name="fjern" onkeyup="validerNavn(this.value)"/>
         </td>
         <td>Eiers adresse: <br>
-            <input type="text" id="innAdresse" name="fjern"/>
+            <input type="text" id="innAdresse" name="fjern" onkeyup="validerAdresse(this.value)"/>
         </td>
     </tr>
-
+    <tr>
+        <td><div id="persF" style="color: red"></div></td>
+        <td><div id="navnF" style="color: red"></div></td>
+        <td><div id="adresseF" style="color: red"></div></td>
+    </tr>
     <tr>
         <td>Kjennetegn: <br>
             <input type="text" id="innKjennetegn" name="fjern"/>
@@ -45,7 +50,7 @@
 
 <div id="feil" style="color: red"></div>
 
-<button id="leggTil" class="btn btn-primary" onclick="lagre();">Registrer</button>
+<button id="leggTil" class="btn btn-primary" onclick="validerAltMain();">Registrer</button>
 
 <div id="visRegister"></div>
 
