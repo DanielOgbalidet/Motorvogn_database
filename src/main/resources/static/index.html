@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<table>
+<table id="tableMotorvogn">
     <tr>
         <td>Eiers personnummer: <br>
             <input type="number" id="innPers" name="fjern" onkeyup="validerPers(this.value)"/>
@@ -54,8 +54,17 @@
 
 <div id="visRegister"></div>
 
-<br>
-<button id="slett" class="btn btn-danger" onclick="slett()" disabled>Slett alle</button>
+<table>
+    <tr>
+        <td><button id="slett" class="btn btn-danger" onclick="slett()">Slett alle</button></td>
+    </tr>
+    <tr>
+        <td><button id="loginIndex" class="btn btn-primary" onclick="loginIndex()">Logg inn</button></td>
+    </tr>
+    <tr>
+        <td><button id="logout" class="btn btn-secondary" onclick="logout()">Logg ut</button></td>
+    </tr>
+</table>
 
 </body>
 </html>

@@ -1,4 +1,5 @@
 $(function () {
+    sjekkInlogget();
     velgMerker();
     vis();
 });
@@ -65,7 +66,7 @@ function vis() {
 }
 
 function ut(motorvogn) {
-    let ut = "Alle bilene: <br>";
+    let ut = "<h1>Motorvogner</h1>: <br>";
     ut += "<table class='table table-striped'>" +
         "<tr>" +
         "<th>Personnr</th>" +
@@ -85,14 +86,13 @@ function ut(motorvogn) {
             "<td>"+vogn.kjennetegn+"</td>" +
             "<td>"+vogn.merke+"</td>" +
             "<td>"+vogn.type+"</td>" +
-            "<td><button class='btn btn-danger' onclick='slettBil("+vogn.id+")'>Slett</button></td>" +
-            "<td><a href='endre.html?id="+vogn.id+"' class='btn btn-info'>Endre</a></td>" +
+            "<td><button name='endre' class='btn btn-danger' onclick='slettBil("+vogn.id+")'>Slett</button></td>" +
+            "<td><button name='endre' class='btn btn-info' onclick='endreBil("+vogn.id+")'>Endre</button></td>" +
             "</tr>"
     }
     ut += "</table>";
     $("#visRegister").html(ut);
 
-    $("#slett").attr('disabled', false);
     $("input[name = fjern]").val("");
     $("#valgMerker")[0].selectedIndex = 0;
     $("#innType").html("");
@@ -108,9 +108,47 @@ function slettBil(id) {
 function slett() {
     $.get("/slett", function () {
         $("#visRegister").html("");
-        $("#slett").attr('disabled', true);
+        vis();
     }).fail(function(jqXHR) {
         const json = $.parseJSON(jqXHR.responseText);
         $("#feil").html(json.message);
+    });
+}
+
+function endreBil(id) {
+    $.get("/sjekkInlogget", function(data) {
+        if(data) {
+            window.location.href = "endre.html?id=" + id;
+        }
+    });
+}
+
+function loginIndex() {
+    window.location.href = "login.html";
+}
+
+function logout() {
+    $.get("/logout", function() {
+        window.location.reload();
+    });
+}
+
+function sjekkInlogget() {
+    $.get("/sjekkInlogget", function(data) {
+        if(!data) {
+            $("#leggTil").hide();
+            $("#slett").hide();
+            $("#logout").attr('disabled', true);
+            $("#loginIndex").attr('disabled', false);
+            $("[name = endre]").hide();
+            $("#tableMotorvogn").hide();
+        } else {
+            $("#leggTil").show();
+            $("#slett").show();
+            $("#logout").attr('disabled', false);
+            $("#loginIndex").attr('disabled', true);
+            $("[name = endre]").show();
+            $("#tableMotorvogn").show();
+        }
     });
 }

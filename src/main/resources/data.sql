@@ -9,3 +9,5 @@ INSERT INTO Bil (merke, type) VALUES('Toyota', 'P4');
 INSERT INTO Bil (merke, type) VALUES('BMW', 'B34');
 INSERT INTO Bil (merke, type) VALUES('BMW', 'M34');
 INSERT INTO Bil (merke, type) VALUES('BMW', 'W34');
+
+INSERT INTO Bruker (brukernavn, passord) VALUES('brukernavn', 'passord');

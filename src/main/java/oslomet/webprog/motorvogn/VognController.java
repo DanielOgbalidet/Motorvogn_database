@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -15,6 +16,9 @@ public class VognController {
 
     @Autowired
     private VognRepository rep;
+
+    @Autowired
+    private HttpSession session;
 
     public boolean valider(Motorvogn m) {
         String pers = "\\d{11}";
@@ -30,13 +34,15 @@ public class VognController {
 
     @PostMapping("/lagre")
     public void leggTil(Motorvogn innMotorvogn, HttpServletResponse response) throws IOException{
-        if(!valider(innMotorvogn)) {
-            response.sendError(HttpStatus.NOT_ACCEPTABLE.value(), "Det har oppstått feil ved validering");
-        }else {
-            if (!rep.add(innMotorvogn)) {
-                response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Det har oppstått en feil, plis prøv igjen senere");
+        if(session.getAttribute("LoggedIn") != null) {
+            if (!valider(innMotorvogn)) {
+                response.sendError(HttpStatus.NOT_ACCEPTABLE.value(), "Det har oppstått feil ved validering");
+            } else {
+                if (!rep.add(innMotorvogn)) {
+                    response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Det har oppstått en feil, plis prøv igjen senere");
+                }
             }
-        }
+        } else response.sendError(HttpStatus.NOT_FOUND.value(), "Du må logge inn");
     }
 
     @PostMapping("/visArray")
@@ -60,14 +66,18 @@ public class VognController {
 
     @GetMapping("/slett")
     public void slett(HttpServletResponse response) throws IOException{
-        if(!rep.slett()) {
-            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Prøv igjen senere");
-        }
+        if(session.getAttribute("LoggedIn") != null) {
+            if (!rep.slett()) {
+                response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Prøv igjen senere");
+            }
+        } else response.sendError(HttpStatus.NOT_FOUND.value(), "Du må logge inn");
     }
 
     @GetMapping("/slettBil")
     public void slettBil(int id) {
-        rep.slettBil(id);
+        if(session.getAttribute("LoggedIn") != null) {
+            rep.slettBil(id);
+        }
     }
 
     @GetMapping("/hentEnBil")
@@ -84,4 +94,23 @@ public class VognController {
         rep.endreBil(m);
     }
 
+    @GetMapping("/login")
+    public boolean login(Bruker bruker, HttpServletResponse response) throws IOException {
+        if(rep.login(bruker)) {
+            session.setAttribute("LoggedIn", bruker);
+            return true;
+        }
+        response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Du må logge inn");
+        return false;
+    }
+
+    @GetMapping("/logout")
+    public void logout() {
+        session.removeAttribute("LoggedIn");
+    }
+
+    @GetMapping("/sjekkInlogget")
+    public boolean sjekkInlogget() {
+        return session.getAttribute("LoggedIn") != null;
+    }
 }

@@ -83,4 +83,17 @@ public class VognRepository {
         db.update(sql, m.getPersonNr(), m.getNavn(), m.getAdresse(), m.getKjennetegn(), m.getMerke(), m.getType(), m.getId());
     }
 
+    public boolean login(Bruker bruker) {
+        Object[] param = new Object[]{bruker.getBrukernavn(), bruker.getPassord()};
+        String sql = "SELECT COUNT(*) FROM Bruker WHERE brukernavn = ? AND passord = ?";
+        int antall;
+
+        try{
+            antall = db.queryForObject(sql, Integer.class, param);
+        }catch (Exception e) {
+            logger.error("Feil med login() " + e);
+            return false;
+        }
+        return antall > 0;
+    }
 }
