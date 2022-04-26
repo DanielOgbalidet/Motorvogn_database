@@ -152,3 +152,8 @@ function sjekkInlogget() {
         }
     });
 }
+
+function krypterAlt() {
+    $.post("/krypterAlt", function() {
+    });
+}

@@ -100,7 +100,7 @@ public class VognController {
             session.setAttribute("LoggedIn", bruker);
             return true;
         }
-        response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Du må logge inn");
+        response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Feil brukernavn eller passord");
         return false;
     }
 
@@ -112,5 +112,10 @@ public class VognController {
     @GetMapping("/sjekkInlogget")
     public boolean sjekkInlogget() {
         return session.getAttribute("LoggedIn") != null;
+    }
+
+    @PostMapping("/krypterAlt")
+    public void krypterAlt() {
+        rep.krypterAllePassord();
     }
 }

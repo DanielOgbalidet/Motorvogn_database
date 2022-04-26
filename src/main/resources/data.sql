@@ -11,3 +11,4 @@ INSERT INTO Bil (merke, type) VALUES('BMW', 'M34');
 INSERT INTO Bil (merke, type) VALUES('BMW', 'W34');
 
 INSERT INTO Bruker (brukernavn, passord) VALUES('brukernavn', 'passord');
+INSERT INTO Bruker (brukernavn, passord) VALUES('brukernavn1', 'passord1');

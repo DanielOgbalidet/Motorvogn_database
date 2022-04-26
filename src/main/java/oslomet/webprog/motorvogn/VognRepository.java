@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,6 +14,8 @@ import java.util.List;
 public class VognRepository {
 
     private final Logger logger = LoggerFactory.getLogger(VognRepository.class);
+
+    BCryptPasswordEncoder bCrypt = new BCryptPasswordEncoder(15);
 
     @Autowired
     private JdbcTemplate db;
@@ -83,6 +86,7 @@ public class VognRepository {
         db.update(sql, m.getPersonNr(), m.getNavn(), m.getAdresse(), m.getKjennetegn(), m.getMerke(), m.getType(), m.getId());
     }
 
+    /*
     public boolean login(Bruker bruker) {
         Object[] param = new Object[]{bruker.getBrukernavn(), bruker.getPassord()};
         String sql = "SELECT COUNT(*) FROM Bruker WHERE brukernavn = ? AND passord = ?";
@@ -95,5 +99,46 @@ public class VognRepository {
             return false;
         }
         return antall > 0;
+    }
+     */
+
+    public boolean login(Bruker bruker) {
+        String sql = "SELECT * FROM Bruker WHERE brukernavn = ?";
+
+        try{
+            Bruker b = db.queryForObject(sql, BeanPropertyRowMapper.newInstance(Bruker.class), bruker.getBrukernavn());
+            if(b != null) {
+                return sjekkPassord(bruker.getPassord(), b.getPassord());
+            } else return false;
+        }catch (Exception e) {
+            logger.error("Feil med login() " + e);
+            return false;
+        }
+    }
+
+    public String krypterPassord(String passord) {
+        return bCrypt.encode(passord);
+    }
+
+    public boolean sjekkPassord(String passord, String hashPassord) {
+        return bCrypt.matches(passord, hashPassord);
+    }
+
+    public String hentPassord(int i) {
+        String sql = "SELECT passord FROM Bruker WHERE id = ?";
+        String passord =  db.queryForObject(sql, String.class, i);
+        return krypterPassord(passord);
+    }
+
+    public void krypterAllePassord() {
+        String sql = "UPDATE Bruker SET passord = ? WHERE id = ?";
+
+        int i = 1;
+        while(i > 0) {
+            if(hentPassord(i) != null) {
+                db.update(sql, hentPassord(i), i);
+            } else i = 0;
+            i++;
+        }
     }
 }
