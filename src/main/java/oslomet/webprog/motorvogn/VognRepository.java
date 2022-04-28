@@ -100,6 +100,7 @@ public class VognRepository {
         }
         return antall > 0;
     }
+    Brukt når jeg ikke trengte å hashe passord
      */
 
     public boolean login(Bruker bruker) {
@@ -124,6 +125,7 @@ public class VognRepository {
         return bCrypt.matches(passord, hashPassord);
     }
 
+    /*
     public String hentPassord(int i) {
         String sql = "SELECT passord FROM Bruker WHERE id = ?";
         String passord =  db.queryForObject(sql, String.class, i);
@@ -139,6 +141,26 @@ public class VognRepository {
                 db.update(sql, hentPassord(i), i);
             } else i = 0;
             i++;
+        }
+    }
+
+    Disse ble brukt når jeg allerede hadde to brukere inne i tabellen via data.sql. Trengs ikke lenger når alle brukere må opprettes
+     */
+
+    public boolean opprett(Bruker b) {
+        String sql1 = "SELECT COUNT(*) FROM Bruker WHERE brukernavn = ?";
+        String sql2 = "INSERT INTO Bruker (brukernavn, passord) VALUES (?, ?)";
+        int antall = db.queryForObject(sql1, Integer.class, b.getBrukernavn());
+        try {
+            if(antall > 0) {
+                return false;
+            } else {
+                db.update(sql2, b.getBrukernavn(), krypterPassord(b.getPassord()));
+                return true;
+            }
+        } catch(Exception e) {
+            logger.error("Feil med opprettelse av bruker " + e);
+            return false;
         }
     }
 }

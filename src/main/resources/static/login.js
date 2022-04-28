@@ -4,6 +4,8 @@ function login() {
         passord: $("#passord").val()
     }
 
+    $("#loggInn").html("Loading...");
+
     $.get("/login", Bruker, function(data) {
         if(data) {
             window.location.href = "index.html";
@@ -13,5 +15,6 @@ function login() {
     }).fail(function(jqXHR) {
         const json = $.parseJSON(jqXHR.responseText);
         $("#feilLogin").html(json.message);
+        $("#loggInn").html("Logg inn");
     });
 }

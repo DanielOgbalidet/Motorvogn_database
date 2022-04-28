@@ -2,6 +2,7 @@ $(function () {
     sjekkInlogget();
     velgMerker();
     vis();
+    //krypterAlt(); Denne ble brukt når vi allerede hadde brukere inn fra før med passord som ikke allerede var kryptert
 });
 
 function velgMerker() {
@@ -94,7 +95,7 @@ function ut(motorvogn) {
     $("#visRegister").html(ut);
 
     $("input[name = fjern]").val("");
-    $("#valgMerker")[0].selectedIndex = 0;
+    //$("#valgMerker")[0].selectedIndex = 0;
     $("#innType").html("");
 }
 
@@ -142,6 +143,7 @@ function sjekkInlogget() {
             $("#loginIndex").attr('disabled', false);
             $("[name = endre]").hide();
             $("#tableMotorvogn").hide();
+            $("#opprettBruker").show();
         } else {
             $("#leggTil").show();
             $("#slett").show();
@@ -149,11 +151,20 @@ function sjekkInlogget() {
             $("#loginIndex").attr('disabled', true);
             $("[name = endre]").show();
             $("#tableMotorvogn").show();
+            $("#opprettBruker").hide();
         }
     });
 }
 
+/*
 function krypterAlt() {
     $.post("/krypterAlt", function() {
     });
+}
+
+Ble brukt til allerede eksisterende brukere via data.sql
+ */
+
+function byttTilOpprett() {
+    window.location.href = "opprett.html";
 }

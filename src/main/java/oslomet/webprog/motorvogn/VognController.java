@@ -25,11 +25,16 @@ public class VognController {
         String navn = "[a-zæøåA-ZÆØÅ \\-]{2,20}";
         String adresse = "[\\da-zæøåA-ZÆØÅ -'\\-]{2,50}";
 
+        /*
         boolean persOK = m.getPersonNr().matches(pers);
         boolean navnOK = m.getNavn().matches(navn);
         boolean adresseOK = m.getAdresse().matches(adresse);
 
         return persOK && navnOK && adresseOK;
+
+         */
+
+        return m.getPersonNr().matches(pers) && m.getNavn().matches(navn) && m.getAdresse().matches(adresse);
     }
 
     @PostMapping("/lagre")
@@ -114,8 +119,20 @@ public class VognController {
         return session.getAttribute("LoggedIn") != null;
     }
 
+    /*
     @PostMapping("/krypterAlt")
     public void krypterAlt() {
         rep.krypterAllePassord();
+    }
+    Brukt til allerede eksisterende brukere som nå ikke finnes
+     */
+
+    @PostMapping("/opprett")
+    public boolean opprett(Bruker b, HttpServletResponse response) throws IOException {
+        if(!rep.opprett(b)) {
+            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Brukernavn finnes allerede. Velg et annet");
+            return false;
+        }
+        return true;
     }
 }
